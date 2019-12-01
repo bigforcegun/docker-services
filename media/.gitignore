@@ -1,0 +1,10 @@
+!.gitignore
+!.keep
+media
+airsonic/config
+
+beets/config/*
+!beets/config/config.yaml
+
+ampache/data
+ampache/metadata

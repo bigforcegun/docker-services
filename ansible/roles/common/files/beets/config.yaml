@@ -1,0 +1,134 @@
+plugins: 
+    - fetchart
+    - lyrics 
+    - embedart 
+    - convert 
+    # - scrub  # чистит рейтинг! #замедляет импорт
+    - replaygain 
+    - lastgenre 
+    #- chroma 
+    - web
+    - missing
+    - duplicates
+
+directory: /music/beets_music
+library: /config/musiclibrary.blb
+art_filename: albumart
+threaded: yes
+original_date: no
+per_disc_numbering: no
+
+convert:
+    auto: no
+    ffmpeg: /usr/bin/ffmpeg
+    opts: -ab 320k -ac 2 -ar 48000
+    max_bitrate: 320
+    threads: 1
+    
+paths:
+    default: $albumartist/%if{$album,$album%aunique{},Undefined}/$track $title 
+    singleton: $albumartist/Singles/$title
+    comp: Compilations/$album%aunique{}/$track $title
+    albumtype:soundtrack: Soundtracks/$album/$track $title 
+        
+import:
+    write: yes
+    copy: no
+    move: yes
+    delete: no
+
+    autotag: yes
+    default_action: apply
+    resume: ask
+    incremental: yes
+    quiet_fallback: skip
+    timid: no
+    log: /config/beet.log
+
+asciify_paths: false
+
+clutter: ["Thumbs.DB", ".DS_Store", "*.m3u", ".pls", "*.jpg"]
+
+replace:
+    '^\.': _
+    '[\x00-\x1f]': _
+    '[<>:"\?\*\|]': _
+    '[\xE8-\xEB]': e
+    '[\xEC-\xEF]': i
+    '[\xE2-\xE6]': a
+    '[\xF2-\xF6]': o
+    '[\xF8]': o
+    '\.$': _
+    '\s+$': ''
+
+
+# User Interface -------------------------------------------------------------
+
+
+web:
+    host: 0.0.0.0
+    port: 8337
+
+color: yes
+
+
+# Auto Tagger ----------------------------------------------------------------
+
+match:
+    strong_rec_thresh: 0.10      # match 90% or better for auto import
+    medium_rec_thresh: 0.25
+    rec_gap_thresh: 0.25
+    max_rec:
+        missing_tracks: medium
+        unmatched_tracks: medium
+    #preferred:
+    #    countries: []
+    #    media: []
+    #    original_year: no
+    #ignored: []
+    #ignored: missing_tracks unmatched_tracks
+
+
+# Plugins Config -------------------------------------------------------------
+
+    
+    
+lyrics:
+    auto: yes
+    fallback: ''
+
+lastgenre:
+    auto: yes
+    #whitelist: ~/.config/beets/genres.txt
+    #canoncical: ~/.config/beets/genres-tree.yaml
+    #canonical: yes
+    fallback: ''
+    source: album
+
+
+embedart:
+    auto: yes
+    #maxwidth: 300
+
+
+fetchart:
+    auto: yes
+    #maxwidth: 300
+    #cautious: true
+    #cover_names: cover folder
+    
+replaygain:
+    auto: no
+    #overwrite: yes
+    #albumgain: yes
+
+missing:
+    format: $albumartist - $album - $track - $title
+    count: no
+    total: no
+
+scrub:
+    auto: yes
+
+duplicates:
+    checksum: no  # expensive

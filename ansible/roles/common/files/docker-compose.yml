@@ -2,33 +2,34 @@ version: '3'
 
 services:
   ampache:
-    #restart: unless-stopped
+    restart: unless-stopped
     image: ampache/ampache:latest
+    #network_mode: host
     #image: ampache4_local_build:latest
     container_name: ampache
     #user: "${UID}:${GID}"
     #user: "1000:1000"
     environment:
-      PUID: 1000
-      PGID: 1000
+      - PUID=${PUID}
+      - PGID=${PGID}
     ports:
       - 4080:80
     volumes:
       - ./media:/media
-      - ./ampache/data:/var/lib/mysql
-      - ./ampache/config:/var/www/config
-      - ./ampache/metadata:/var/www/metadata
+      - ./data/ampache/data:/var/lib/mysql
+      - ./data/ampache/config:/var/www/config
+      - ./data/ampache/metadata:/var/www/metadata
   beets:
-    #restart: unless-stopped
+    restart: unless-stopped
     image: linuxserver/beets
     container_name: beets
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=Europe/London
     volumes:
       - ./media:/music
-      - ./beets/config:/config
-      - ./beets/downloads:/downloads
+      - ./data/beets/config:/config
+      - ./downloads:/downloads
     ports:
       - 8337:8337

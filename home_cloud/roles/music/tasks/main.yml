@@ -29,6 +29,13 @@
     path: '{{ ampache_path }}/config'
     mode: '0777' # temp hack  (need write custom docker container witout mysql and with good user mappings)    
 
+
+- name: Fix metadata permissions
+  file:
+    state: directory
+    path: '{{ ampache_path }}/metadata'
+    mode: '0775' # temp hack  (need write custom docker container witout mysql and with good user mappings)  
+     
 # - name: Clone ampache docker repo
 #   git:
 #     repo: 'https://github.com/ampache/ampache-docker'
@@ -66,12 +73,19 @@
 - name: Copy Ampache files
   copy:
     src: files/ampache/ampache.cfg.php
-    dest: "{{ ampache_path }}/config/ampache.cfg.php.dist"
+    dest: "{{ ampache_path }}/config/ampache.cfg.php"
   
 - name: Copy compose file
   copy:
     src: files/docker-compose.yml
     dest: "{{ music_cloud_path }}/docker-compose.yml"
+
+- name: Copy Ampache fix entrypoint
+  copy:
+    src: files/ampache/entrypoint.sh
+    dest: "{{ music_cloud_path }}/ampache-entrypoint.sh"
+    mode: a+x
+
 
 # - name: Start Prometheus service
 #   docker_service:

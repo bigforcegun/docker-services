@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  organizr:
+    restart: unless-stopped
+    image: organizrtools/organizr-v2:latest
+    container_name: organizr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=Europe/London
+    ports:
+      - 9983:80
+    volumes:
+      - ./config:/config

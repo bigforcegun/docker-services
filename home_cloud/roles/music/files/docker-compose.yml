@@ -9,12 +9,15 @@ services:
     container_name: ampache
     #user: "${UID}:${GID}"
     #user: "1000:1000"
+    entrypoint: 
+        - /ampache-entrypoint.sh
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
     ports:
       - 4080:80
     volumes:
+      - ./ampache-entrypoint.sh:/ampache-entrypoint.sh
       - ./media:/media
       - ./data/ampache/data:/var/lib/mysql
       - ./data/ampache/config:/var/www/config
@@ -28,7 +31,7 @@ services:
       - PGID=${PGID}
       - TZ=Europe/London
     volumes:
-      - ./media:/music
+      - ./media/music:/music
       - ./data/beets/config:/config
       - ./downloads:/downloads
     ports:

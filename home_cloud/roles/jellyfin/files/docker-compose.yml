@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  jellyfin:
+    network_mode: host
+    restart: unless-stopped
+    image: linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=Europe/London
+    ports:
+      - 8096:8096
+      #- 1902:1900/udp
+      #- 1900:1900/udp
+    volumes:
+      - ./config:/config
+      - ./media:/data
+      - ./transcode:/transcode
+    devices:
+      - /dev/dri:/dev/dri

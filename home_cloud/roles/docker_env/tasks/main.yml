@@ -1,0 +1,4 @@
+- name: Template a file to /etc/files.conf
+  template:
+    src: templates/env.j2
+    dest: "{{ env_destination }}/.env"

@@ -1,0 +1,32 @@
+- name: Create Service directory
+  file:
+    path: "{{ jellyfin_service_path }}"
+    state: directory
+    owner: "{{ jellyfin_user }}"
+    group: "{{ jellyfin_group }}"
+    #mode: 0775
+    #recurse: yes
+
+
+- name: Create Jellyfin directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - '{{ jellyfin_service_path }}/config'
+    - '{{ jellyfin_service_path }}/transcode'
+
+
+- name: Create links to media 
+  file:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    state: link
+  loop:
+    - { src: '{{ video_library_path }}', dest: '{{ jellyfin_service_path }}/media' }
+    
+
+- name: Copy compose file
+  copy:
+    src: files/docker-compose.yml
+    dest: "{{ jellyfin_service_path }}/docker-compose.yml"

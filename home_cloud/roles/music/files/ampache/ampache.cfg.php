@@ -458,12 +458,12 @@ memory_limit = 128
 ; Especially useful if you have a front and a back image in a folder
 ; comment out if Ampache should search for any jpg, gif or png
 ; DEFAULT: folder.jpg
-;album_art_preferred_filename = "folder.jpg"
+album_art_preferred_filename = "albumart.jpg"
 
 ; Album Art Store on Disk
 ; This defines if arts should be stored on disk instead of database.
 ; DEFAULT: false
-album_art_store_disk = "false"
+album_art_store_disk = "true"
 
 ; Local Metadata Directory
 ; This define a local metadata directory with write access where to store
@@ -474,27 +474,27 @@ local_metadata_dir = "/var/www/metadata"
 ; Maximal upload size
 ; Specify the maximal allowed upload size for images, in bytes.
 ; DEFAULT: 1048576
-;max_upload_size = 1048576
+max_upload_size = 4194304
 
 ; Album Art Minimum Width
 ; Specify the minimum width for arts (in pixel).
 ; DEFAULT: none
-;album_art_min_width = 100
+#album_art_min_width = 300
 
 ; Album Art Maximum Width
 ; Specify the maximum width for arts (in pixel).
 ; DEFAULT: none
-album_art_max_width = "512"
+#album_art_max_width = "600"
 
 ; Album Art Minimum Height
 ; Specify the minimum height for arts (in pixel).
 ; DEFAULT: none
-;album_art_min_height = 100
+#album_art_min_height = 300
 
 ; Album Art Maximum Height
 ; Specify the maximum height for arts (in pixel).
 ; DEFAULT: none
-album_art_max_height = "512"
+#album_art_max_height = "600"
 
 ; Resize Images * Requires PHP-GD *
 ; Set this to true if you want Ampache to resize the Album
@@ -509,7 +509,7 @@ album_art_max_height = "512"
 ; cover art for playlists automatically based on
 ; the content.
 ; DEFAULT: false
-;playlist_art = "false"
+playlist_art = "true"
 
 ; Statistical Graphs * Requires PHP-GD *
 ; Set this to true if you want Ampache to generate statistical graphs on usages / users.

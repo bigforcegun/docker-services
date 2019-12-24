@@ -1,0 +1,32 @@
+- name: create service root directory
+  file:
+    path: "{{ services_path.organizr }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    #mode: 0775
+    #recurse: yes
+
+- name: create service main directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - '{{ services_path.organizr }}/config'
+
+
+- name: create env file
+  include_role:
+    name: docker_env
+  vars:
+    env_destination: '{{ services_path.organizr }}'    
+
+
+- name: copy docker-compose file
+  copy:
+    src: files/docker-compose.yml
+    dest: "{{ services_path.organizr }}/docker-compose.yml"
+
+# - name: docker-compose up
+  #docker_compose:
+   # project_src: "{{ services_path.organizr }}"

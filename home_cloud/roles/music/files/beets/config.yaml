@@ -3,6 +3,8 @@ plugins:
     - lyrics 
     - embedart 
     - convert 
+    - discogs
+    - mbsync
     # - scrub  # чистит рейтинг! #замедляет импорт
     - replaygain 
     - lastgenre 
@@ -11,7 +13,7 @@ plugins:
     - missing
     - duplicates
 
-directory: /music/beets_music
+directory: /music
 library: /config/musiclibrary.blb
 art_filename: albumart
 threaded: yes
@@ -41,11 +43,35 @@ import:
     default_action: apply
     resume: ask
     incremental: yes
+    incremental_skip_later: yes
+    #none_rec_action: skip    
     quiet_fallback: skip
     timid: no
     log: /config/beet.log
 
 asciify_paths: false
+
+# Auto Tagger ----------------------------------------------------------------
+
+match:
+    strong_rec_thresh: 0.10      # match 90% or better for auto import
+    medium_rec_thresh: 0.25
+    rec_gap_thresh: 0.25
+    distance_weights:
+        missing_tracks: 0.1
+        #track_index: 0.1
+    max_rec:
+        missing_tracks: strong
+        track_length: low
+        unmatched_tracks: low
+    #preferred:
+    #    countries: []
+    #    media: []
+    #    original_year: no
+    #ignored: []
+    #ignored: missing_tracks unmatched_tracks
+    #ignored: missing_tracks
+
 
 clutter: ["Thumbs.DB", ".DS_Store", "*.m3u", ".pls", "*.jpg"]
 
@@ -72,22 +98,6 @@ web:
 color: yes
 
 
-# Auto Tagger ----------------------------------------------------------------
-
-match:
-    strong_rec_thresh: 0.10      # match 90% or better for auto import
-    medium_rec_thresh: 0.25
-    rec_gap_thresh: 0.25
-    max_rec:
-        missing_tracks: medium
-        unmatched_tracks: medium
-    #preferred:
-    #    countries: []
-    #    media: []
-    #    original_year: no
-    #ignored: []
-    #ignored: missing_tracks unmatched_tracks
-
 
 # Plugins Config -------------------------------------------------------------
 
@@ -113,7 +123,8 @@ embedart:
 
 fetchart:
     auto: yes
-    #maxwidth: 300
+    minwidth: 300
+    #maxwidth: 600
     #cautious: true
     #cover_names: cover folder
     
@@ -132,3 +143,8 @@ scrub:
 
 duplicates:
     checksum: no  # expensive
+
+
+#discogs:
+    #auto: yes
+    #user_token: TKfAITzHFBleZcvmAdHxCDmANmqhTbOPeNxNOYgw

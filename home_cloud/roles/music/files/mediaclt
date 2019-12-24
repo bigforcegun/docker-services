@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+[[ "${__usage+x}" ]] || read -r -d '' __usage <<-'EOF' || true # exits non-zero when EOF encountered
+  cron                  runs default tasks
+  ampache cron          runs default tasks for ampache 
+  ampache shell         opens ampache docker shell
+  beets cron
+  beets shell
+  -h --help        This page
+EOF
+
+# shellcheck disable=SC2015
+[[ "${__helptext+x}" ]] || read -r -d '' __helptext <<-'EOF' || true # exits non-zero when EOF encountered
+ This is Bash3 Boilerplate's help text. Feel free to add any description of your
+ program or elaborate more on command-line arguments. This section is not
+ parsed and will be added as-is to the help.
+EOF
+
+
+function help () {
+  echo "" 1>&2
+  echo " ${*}" 1>&2
+  echo "" 1>&2
+  echo "  ${__usage:-No usage available}" 1>&2
+  echo "" 1>&2
+
+  if [[ "${__helptext:-}" ]]; then
+    echo " ${__helptext}" 1>&2
+    echo "" 1>&2
+  fi
+
+  exit 1
+}
+
+#help
+#exit
+
+function ampache_cron () {
+
+}
+
+AMPACHE_PREFIX="docker-compose exec -u www-data ampache"
+BEETS_PREFIX="docker-compose exec -u abc beets"
+`${AMPACHE_PREFIX} /bin/bash"`
+`${BEETS_PREFIX} /bin/bash"`
+
+
+
+
+/usr/bin/php /var/www/bin/catalog_update.inc -a # Adds new media to Catalogs
+/usr/bin/php /var/www/bin/catalog_update.inc -g # Gathers media Art
+/usr/bin/php /var/www/bin/catalog_update.inc -u # Update artist information and fetch similar artists from last.fm Make sure lastfm_api_key is set in your configuration file
+/usr/bin/php /var/www/bin/catalog_update.inc -v # Verifies Catalog entries and updates them if related files have new information
+/usr/bin/php /var/www/bin/catalog_update.inc -c # Cleans Catalogs from orphaned entries
+
+
+
+beet import /downloads/import/
+beet import -q /downloads/import/
+beet import -A /downloads/import/
+
+
+function main_switch () {
+case "$1" in
+        ampache)
+            ampache_switch
+            ;;
+
+        beets)
+            beets_switch
+            ;;
+
+        cron)
+            common_cron
+            ;;
+        *)
+            help
+            exit 1
+
+}
+
